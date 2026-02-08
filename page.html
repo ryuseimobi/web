@@ -37,6 +37,15 @@
                 padding: 0 2px;
                 border-radius: 2px;
             }
+            
+            /* Efek hover untuk nama file */
+            .file-name {
+                transition: color 0.2s ease;
+            }
+            
+            .file-name:hover {
+                color: #1d4ed8;
+            }
         </style>
     </head>
     <body class="bg-slate-50 font-sans text-slate-900 antialiased">
@@ -203,9 +212,6 @@
                 // Cek dan tampilkan data
                 checkAndDisplayData();
                 
-                // TAMBAHKAN: Setiap kali halaman page.html diakses, tambah download counter
-                incrementDownloadCounter();
-                
                 // Setup search functionality
                 setupSearch();
                 
@@ -290,9 +296,10 @@
                         <i class="${file.icon} text-blue-600"></i>
                     </div>
                     <div class="ml-4 flex-1">
-                        <a href="${file.shortlink}" target="_blank" class="file-download-link font-medium text-blue-900 hover:text-blue-700 no-underline block" data-file-id="${file.id}">
+                        <!-- PERUBAHAN PENTING: Nama file HANYA TEKS, bukan link -->
+                        <div class="file-name font-medium text-blue-900 hover:text-blue-700 cursor-default">
                             ${fileName}
-                        </a>
+                        </div>
                         <p class="text-sm text-slate-500 timestamp">
                             <i class="fas fa-calendar-alt mr-1 text-xs"></i> ${file.timestamp}
                             <span class="mx-2">•</span>
@@ -300,7 +307,10 @@
                         </p>
                     </div>
                     <div class="ml-auto">
-                        <button class="file-download-btn inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors duration-200 no-underline" data-file-id="${file.id}" data-file-url="${file.shortlink}">
+                        <!-- HANYA tombol ini yang bisa download -->
+                        <button class="file-download-btn inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors duration-200 no-underline" 
+                                data-file-id="${file.id}" 
+                                data-file-url="${file.shortlink}">
                             <i class="fas fa-download mr-1"></i> Download
                         </button>
                     </div>
@@ -430,34 +440,6 @@
                 console.log(`Data updated: ${filesData.length} files loaded`);
             };
             
-            // TAMBAHKAN FUNGSI UNTUK INCREMENT DOWNLOAD COUNTER
-            function incrementDownloadCounter() {
-                // Gunakan sessionStorage untuk mencegah increment ganda dalam satu sesi
-                const hasIncremented = sessionStorage.getItem('pageIncremented');
-                
-                if (!hasIncremented) {
-                    // Ambil total download dari localStorage
-                    let totalDownloads = localStorage.getItem('ryuseiTotalDownloads');
-                    
-                    if (totalDownloads === null) {
-                        totalDownloads = 398520; // Nilai default
-                    } else {
-                        totalDownloads = parseInt(totalDownloads);
-                    }
-                    
-                    // Tambah 1
-                    totalDownloads++;
-                    
-                    // Simpan kembali ke localStorage
-                    localStorage.setItem('ryuseiTotalDownloads', totalDownloads.toString());
-                    
-                    // Tandai sudah di-increment dalam sesi ini
-                    sessionStorage.setItem('pageIncremented', 'true');
-                    
-                    console.log(`Total Downloads updated to: ${totalDownloads}`);
-                }
-            }
-            
             // FUNGSI SEARCH
             function setupSearch() {
                 const searchInput = document.getElementById('search-input');
@@ -515,7 +497,7 @@
                         e.preventDefault();
                         // Fokus ke hasil pertama jika ada
                         if (filteredFiles.length > 0) {
-                            const firstFileLink = document.querySelector('.file-download-link');
+                            const firstFileLink = document.querySelector('.file-name');
                             if (firstFileLink) {
                                 firstFileLink.focus();
                             }
@@ -630,6 +612,15 @@
                         downloadBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
                         downloadBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
                     }, 2000);
+                    
+                    // Update counter di index.html jika halaman terbuka
+                    if (window.opener && !window.opener.closed) {
+                        try {
+                            window.opener.updateDownloadCounter(totalDownloads);
+                        } catch (e) {
+                            console.log('Cannot update parent window counter');
+                        }
+                    }
                 } else {
                     console.log(`File ${fileId} sudah di-download dalam sesi ini`);
                     
@@ -649,6 +640,14 @@
                 // Buka link download di tab baru - TANPA POPUP KONFIRMASI
                 window.open(fileUrl, '_blank');
             }
+            
+            // Fungsi untuk update counter (bisa dipanggil dari luar)
+            window.updateDownloadCounter = function(count) {
+                const downloadsElement = document.getElementById('total-downloads');
+                if (downloadsElement) {
+                    downloadsElement.textContent = count.toLocaleString();
+                }
+            };
         </script>
         
         <!-- Google tag (gtag.js) -->
