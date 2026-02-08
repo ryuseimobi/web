@@ -120,13 +120,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Konfirmasi link Telegram
+            // Link Telegram langsung terbuka tanpa konfirmasi - TANPA POP-UP
             const telegramLink = document.querySelector('a[href*="t.me"]');
             if (telegramLink) {
-                telegramLink.addEventListener('click', function(e) {
-                    if (!confirm('Open Telegram? This is the official support channel.')) {
-                        e.preventDefault();
-                    }
+                telegramLink.addEventListener('click', function() {
+                    console.log('Opening Telegram support');
+                    // Biarkan langsung terbuka tanpa confirm()
                 });
             }
         });
