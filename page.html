@@ -187,79 +187,7 @@
             // JANGAN DIUBAH MANUAL!
             // ===========================================================
             let filesData = [
-  {
-    "id": 1,
-    "name": "New Update Paquito Kof Basic",
-    "type": "ZIP",
-    "timestamp": "Uploaded: 2026-02-08 16:34",
-    "shortlink": "https://sfl.gl/lntPG",
-    "icon": "fas fa-file-archive",
-    "processed_at": "2026-02-08 16:34:05"
-  },
-  {
-    "id": 2,
-    "name": "New Update Paquito Kof Collector",
-    "type": "ZIP",
-    "timestamp": "Uploaded: 2026-02-08 16:34",
-    "shortlink": "https://sfl.gl/Nh8nhshm",
-    "icon": "fas fa-file-archive",
-    "processed_at": "2026-02-08 16:34:06"
-  },
-  {
-    "id": 3,
-    "name": "New Update Paquito Kof Default",
-    "type": "ZIP",
-    "timestamp": "Uploaded: 2026-02-08 16:34",
-    "shortlink": "https://sfl.gl/4xReB",
-    "icon": "fas fa-file-archive",
-    "processed_at": "2026-02-08 16:34:08"
-  },
-  {
-    "id": 4,
-    "name": "New Update Paquito Kof Fist Of Light",
-    "type": "ZIP",
-    "timestamp": "Uploaded: 2026-02-08 16:34",
-    "shortlink": "https://sfl.gl/1zG1OWNV",
-    "icon": "fas fa-file-archive",
-    "processed_at": "2026-02-08 16:34:09"
-  },
-  {
-    "id": 5,
-    "name": "New Update Paquito Kof Fmvp",
-    "type": "ZIP",
-    "timestamp": "Uploaded: 2026-02-08 16:34",
-    "shortlink": "https://sfl.gl/fHeO",
-    "icon": "fas fa-file-archive",
-    "processed_at": "2026-02-08 16:34:10"
-  },
-  {
-    "id": 6,
-    "name": "New Update Paquito Kof Manny Pacquiao",
-    "type": "ZIP",
-    "timestamp": "Uploaded: 2026-02-08 16:34",
-    "shortlink": "https://sfl.gl/qWPL",
-    "icon": "fas fa-file-archive",
-    "processed_at": "2026-02-08 16:34:11"
-  },
-  {
-    "id": 7,
-    "name": "New Update Paquito Kof Special",
-    "type": "ZIP",
-    "timestamp": "Uploaded: 2026-02-08 16:34",
-    "shortlink": "https://sfl.gl/Lds8g",
-    "icon": "fas fa-file-archive",
-    "processed_at": "2026-02-08 16:34:13"
-  },
-  {
-    "id": 8,
-    "name": "New Update Paquito Kof Starlight",
-    "type": "ZIP",
-    "timestamp": "Uploaded: 2026-02-08 16:34",
-    "shortlink": "https://sfl.gl/RILt",
-    "icon": "fas fa-file-archive",
-    "processed_at": "2026-02-08 16:34:14"
-  }
-];
+            ];
             // ===========================================================
 
             // Konfigurasi pagination
@@ -280,6 +208,9 @@
                 
                 // Setup search functionality
                 setupSearch();
+                
+                // Setup download button functionality
+                setupDownloadButtons();
             });
 
             function checkAndDisplayData() {
@@ -336,6 +267,11 @@
                     const fileElement = createFileElement(file);
                     container.appendChild(fileElement);
                 });
+                
+                // Re-attach download button events setelah render
+                setTimeout(() => {
+                    attachDownloadButtonEvents();
+                }, 100);
             }
 
             function createFileElement(file) {
@@ -364,9 +300,9 @@
                         </p>
                     </div>
                     <div class="ml-auto">
-                        <a href="${file.shortlink}" target="_blank" class="file-download-btn inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors duration-200 no-underline" data-file-id="${file.id}">
+                        <button class="file-download-btn inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors duration-200 no-underline" data-file-id="${file.id}" data-file-url="${file.shortlink}">
                             <i class="fas fa-download mr-1"></i> Download
-                        </a>
+                        </button>
                     </div>
                 `;
                 
@@ -627,57 +563,92 @@
                 }
             }
             
-            // Event listener untuk klik file download
-            document.addEventListener('click', function(e) {
-                // Jika yang diklik adalah link download atau tombol download
-                if (e.target.closest('.file-download-link') || e.target.closest('.file-download-btn')) {
-                    // Gunakan sessionStorage untuk tracking per-sesi
-                    const sessionKey = 'downloadedFiles';
-                    let downloadedFiles = sessionStorage.getItem(sessionKey);
-                    
-                    if (!downloadedFiles) {
-                        downloadedFiles = [];
-                    } else {
-                        downloadedFiles = JSON.parse(downloadedFiles);
-                    }
-                    
-                    // Dapatkan file ID
-                    const fileId = e.target.closest('.file-download-link, .file-download-btn').dataset.fileId;
-                    
-                    // Cek apakah file ini sudah di-download dalam sesi ini
-                    if (!downloadedFiles.includes(fileId)) {
-                        // Ambil total download dari localStorage
-                        let totalDownloads = localStorage.getItem('ryuseiTotalDownloads');
-                        
-                        if (totalDownloads === null) {
-                            totalDownloads = 398520; // Nilai default
-                        } else {
-                            totalDownloads = parseInt(totalDownloads);
-                        }
-                        
-                        // Tambah 1
-                        totalDownloads++;
-                        
-                        // Simpan kembali ke localStorage
-                        localStorage.setItem('ryuseiTotalDownloads', totalDownloads.toString());
-                        
-                        // Tambahkan file ID ke daftar file yang sudah di-download dalam sesi ini
-                        downloadedFiles.push(fileId);
-                        sessionStorage.setItem(sessionKey, JSON.stringify(downloadedFiles));
-                        
-                        console.log(`File ${fileId} downloaded. Total Downloads: ${totalDownloads}`);
-                        
-                        // Tampilkan notifikasi
-                        if (confirm('File download akan dibuka. Total download telah bertambah!')) {
-                            // Biarkan link terbuka seperti biasa
-                        } else {
-                            e.preventDefault();
-                        }
-                    } else {
-                        console.log(`File ${fileId} sudah di-download dalam sesi ini`);
-                    }
+            // SETUP DOWNLOAD BUTTONS - FUNGSI BARU
+            function setupDownloadButtons() {
+                // Fungsi ini akan dipanggil setelah render files
+                attachDownloadButtonEvents();
+            }
+            
+            function attachDownloadButtonEvents() {
+                // Hapus event listener lama jika ada
+                document.querySelectorAll('.file-download-btn').forEach(btn => {
+                    btn.replaceWith(btn.cloneNode(true));
+                });
+                
+                // Tambahkan event listener baru
+                document.querySelectorAll('.file-download-btn').forEach(btn => {
+                    btn.addEventListener('click', handleDownloadClick);
+                });
+            }
+            
+            function handleDownloadClick(e) {
+                const downloadBtn = e.currentTarget;
+                const fileId = downloadBtn.dataset.fileId;
+                const fileUrl = downloadBtn.dataset.fileUrl;
+                
+                // Gunakan sessionStorage untuk tracking per-sesi
+                const sessionKey = 'downloadedFiles';
+                let downloadedFiles = sessionStorage.getItem(sessionKey);
+                
+                if (!downloadedFiles) {
+                    downloadedFiles = [];
+                } else {
+                    downloadedFiles = JSON.parse(downloadedFiles);
                 }
-            });
+                
+                // Cek apakah file ini sudah di-download dalam sesi ini
+                if (!downloadedFiles.includes(fileId)) {
+                    // Ambil total download dari localStorage
+                    let totalDownloads = localStorage.getItem('ryuseiTotalDownloads');
+                    
+                    if (totalDownloads === null) {
+                        totalDownloads = 398520; // Nilai default
+                    } else {
+                        totalDownloads = parseInt(totalDownloads);
+                    }
+                    
+                    // Tambah 1
+                    totalDownloads++;
+                    
+                    // Simpan kembali ke localStorage
+                    localStorage.setItem('ryuseiTotalDownloads', totalDownloads.toString());
+                    
+                    // Tambahkan file ID ke daftar file yang sudah di-download dalam sesi ini
+                    downloadedFiles.push(fileId);
+                    sessionStorage.setItem(sessionKey, JSON.stringify(downloadedFiles));
+                    
+                    console.log(`File ${fileId} downloaded. Total Downloads: ${totalDownloads}`);
+                    
+                    // Tampilkan efek visual sederhana (opsional)
+                    downloadBtn.innerHTML = '<i class="fas fa-check mr-1"></i> Downloaded';
+                    downloadBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    downloadBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+                    
+                    // Reset tombol setelah 2 detik
+                    setTimeout(() => {
+                        downloadBtn.innerHTML = '<i class="fas fa-download mr-1"></i> Download';
+                        downloadBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                        downloadBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    }, 2000);
+                } else {
+                    console.log(`File ${fileId} sudah di-download dalam sesi ini`);
+                    
+                    // Tampilkan indikasi sudah didownload
+                    const originalHTML = downloadBtn.innerHTML;
+                    downloadBtn.innerHTML = '<i class="fas fa-check mr-1"></i> Downloaded';
+                    downloadBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    downloadBtn.classList.add('bg-gray-600', 'hover:bg-gray-700');
+                    
+                    setTimeout(() => {
+                        downloadBtn.innerHTML = originalHTML;
+                        downloadBtn.classList.remove('bg-gray-600', 'hover:bg-gray-700');
+                        downloadBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    }, 1500);
+                }
+                
+                // Buka link download di tab baru - TANPA POPUP KONFIRMASI
+                window.open(fileUrl, '_blank');
+            }
         </script>
         
         <!-- Google tag (gtag.js) -->
