@@ -54,6 +54,15 @@
                 max-height: 280px !important;
             }
         }
+        /* Animasi hati */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .animate-heartbeat {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
@@ -82,8 +91,8 @@
                     <div class="h-16 w-16 mx-auto rounded-full bg-blue-100 flex items-center justify-center mb-4">
                         <i class="fas fa-qrcode text-blue-600 text-2xl"></i>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Scan QRIS</h2>
-                    <p class="text-gray-600">Amount: <span class="font-bold text-green-600">IDR</span></p>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Scan QRIS untuk Pembayaran</h2>
+                    <p class="text-gray-600">Amount: <span class="font-bold text-green-600">IDR 5,000</span></p>
                 </div>
 
                 <!-- QR Code Image - BESAR -->
@@ -118,21 +127,21 @@
                             <div class="bg-purple-100 p-1.5 rounded-full mr-3 mt-0.5">
                                 <i class="fas fa-check-circle text-purple-600 text-sm"></i>
                             </div>
-                            <p class="text-sm text-gray-700 flex-1">Konfirmasi pembayaran</p>
+                            <p class="text-sm text-gray-700 flex-1">Konfirmasi pembayaran sebesar IDR 5,000</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Informasi Penting -->
+                <!-- PESAN TERIMA KASIH YANG HANGAT -->
                 <div class="mb-6">
-                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 text-left rounded-r-lg">
-                        <div class="flex">
+                    <div class="bg-gradient-to-r from-pink-50 to-rose-50 border-l-4 border-pink-400 p-4 text-left rounded-r-lg">
+                        <div class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i class="fas fa-exclamation-triangle text-yellow-500"></i>
+                                <i class="fas fa-heart text-pink-500 animate-heartbeat text-xl"></i>
                             </div>
                             <div class="ml-3">
-                                <p class="text-sm font-medium text-yellow-800">Important:</p>
-                                <p class="text-sm text-yellow-700 mt-1">Setelah pembayaran, kirim bukti screenshot ke Telegram Admin untuk verifikasi.</p>
+                                <p class="text-sm font-medium text-pink-900 mb-1">Terima Kasih atas Supportnya!</p>
+                                <p class="text-pink-800 text-sm">Kami sangat menghargai kepercayaan dan dukungan Anda. Setelah pembayaran, silakan kirim bukti screenshot ke Telegram Admin kami ya! ❤️</p>
                             </div>
                         </div>
                     </div>
@@ -153,9 +162,15 @@
 
                 <!-- Tombol -->
                 <div class="space-y-3">
+                    <!-- Tombol Back -->
+                    <a href="req.html" class="block w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg flex items-center justify-center transition font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to Request Page
+                    </a>
+                    
                     <!-- Tombol Telegram untuk kirim bukti -->
                     <a href="https://t.me/RyuseiOfficialScript" target="_blank" 
-                       class="block w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg flex items-center justify-center transition font-medium">
+                       class="block w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 px-4 rounded-lg flex items-center justify-center transition font-medium">
                         <i class="fab fa-telegram mr-2"></i>
                         Send Payment Proof
                     </a>
