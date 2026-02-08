@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tutup | Ryusei.mobi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-900 antialiased">
+    <!-- Header Sama dengan page.html -->
+    <header class="sticky border-b border-blue-800/30 top-0 z-50 bg-gradient-to-r from-blue-900 to-blue-800 backdrop-blur">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-white flex items-center">
+                            <div class="bg-white/20 p-2 rounded-lg mr-3">
+                                <i class="fas fa-meteor text-white text-lg"></i>
+                            </div>
+                            Ryusei.mobi
+                        </h1>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="inline-flex items-center rounded-lg bg-white/20 px-4 py-2 text-sm font-semibold text-white hover:bg-white/30 transition-colors duration-200">
+                        <i class="fas fa-home mr-2"></i> Home
+                    </a>
+                    <div class="relative">
+                        <img class="h-8 w-8 rounded-full border-2 border-blue-300 object-cover" src="ppryusei.jpg" alt="Profile">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main class="min-h-screen bg-gradient-to-br from-white via-blue-50 to-blue-100 pb-12">
+        <div class="mx-auto max-w-5xl py-2 lg:py-4 px-2 lg:px-8 space-y-6">
+            <!-- Widget Utama: Pemberitahuan Order Tutup -->
+            <div class="overflow-hidden rounded-3xl bg-white shadow-2xl border border-blue-100">
+                <!-- Header -->
+                <div class="bg-gradient-to-r from-red-600 to-orange-600 px-6 py-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                        <div class="mb-4 sm:mb-0">
+                            <h2 class="text-xl font-bold text-white">🚫 Order Sedang Tutup</h2>
+                            <p class="text-red-100">Saat ini tidak menerima order baru</p>
+                        </div>
+                        <span class="inline-flex items-center rounded-lg bg-white/20 px-3 py-1 text-sm font-semibold text-white">
+                            <i class="fas fa-door-closed mr-1"></i> TUTUP
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Konten -->
+                <div class="p-6 lg:p-8">
+                    <!-- Icon Besar -->
+                    <div class="text-center mb-8">
+                        <div class="inline-block p-6 rounded-full bg-gradient-to-b from-red-100 to-red-50 mb-4">
+                            <i class="fas fa-door-closed text-6xl text-red-600"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-red-700 mb-2">ORDER SEDANG DITUTUP</h3>
+                        <p class="text-slate-600 max-w-2xl mx-auto">
+                            Untuk sementara waktu, kami tidak menerima order baru. File-file yang sudah ada tetap bisa diakses.
+                        </p>
+                    </div>
+
+                    <!-- Informasi -->
+                    <div class="bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-500 p-5 rounded-r-lg mb-8">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mr-4">
+                                <i class="fas fa-info-circle text-red-600 text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-red-900 mb-2">Informasi Penting</h3>
+                                <p class="text-red-800 mb-2">
+                                    • Order sedang ditutup sementara untuk perbaikan sistem
+                                </p>
+                                <p class="text-red-800 mb-2">
+                                    • File-file yang sudah ada tetap bisa di-download
+                                </p>
+                                <p class="text-red-800">
+                                    • Akan dibuka kembali dalam waktu dekat
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Aksi -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <a href="page.html" 
+                           class="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-300">
+                            <i class="fas fa-folder-open mr-3"></i>
+                            Lihat File yang Tersedia
+                        </a>
+                        
+                        <a href="https://t.me/RyuseiOfficialYT" target="_blank"
+                           class="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-300">
+                            <i class="fab fa-telegram mr-3"></i>
+                            Cek Update di Telegram
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Widget Kontak -->
+            <div class="overflow-hidden rounded-3xl bg-white shadow-xl border border-blue-100">
+                <div class="bg-gradient-to-r from-blue-700 to-blue-600 px-6 py-5">
+                    <h2 class="text-xl font-bold text-white">📞 Butuh Bantuan?</h2>
+                    <p class="text-blue-100">Hubungi kami jika ada pertanyaan</p>
+                </div>
+
+                <div class="p-6">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mr-4">
+                                <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <i class="fas fa-headset text-blue-600 text-xl"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-blue-900 text-lg mb-2">Kontak Admin</h3>
+                                <p class="text-blue-800 mb-3">
+                                    Untuk pertanyaan atau bantuan, langsung hubungi admin via Telegram:
+                                </p>
+                                <a href="https://t.me/RyuseiOfficialScript" target="_blank"
+                                   class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                                    <i class="fab fa-telegram mr-2"></i>
+                                    @RyuseiOfficialScript
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Sama dengan page.html -->
+    <footer class="border-t border-blue-200 bg-white/90 backdrop-blur">
+        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0 flex items-center">
+                    <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                        <i class="fas fa-meteor text-blue-600"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-blue-900">Ryusei.mobi</p>
+                        <p class="text-xs text-slate-500">© 2017. All rights reserved.</p>
+                    </div>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-sm text-slate-600 hover:text-blue-700">Order sedang ditutup sementara • Akan dibuka kembali</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Auto-refresh page setiap 5 menit
+        setTimeout(() => {
+            window.location.reload();
+        }, 300000);
+    </script>
+</body>
+</html>
