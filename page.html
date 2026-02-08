@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ryusei.mobi - File Management</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+            body {
+                font-family: 'Inter', sans-serif;
+            }
+            
+            .file-item {
+                cursor: pointer;
+            }
+            
+            .file-item:hover {
+                background-color: rgba(219, 234, 254, 0.5) !important;
+            }
+            
+            .page-btn.active {
+                background-color: #2563eb !important;
+                color: white !important;
+                border-color: #2563eb !important;
+            }
+            
+            .timestamp {
+                font-size: 0.75rem;
+                color: #64748b;
+            }
+            
+            /* Highlight untuk hasil pencarian */
+            .search-highlight {
+                background-color: #fef3c7;
+                padding: 0 2px;
+                border-radius: 2px;
+            }
+        </style>
+    </head>
+    <body class="bg-slate-50 font-sans text-slate-900 antialiased">
+        <header class="sticky border-b border-blue-800/30 top-0 z-50 bg-gradient-to-r from-blue-900 to-blue-800 backdrop-blur">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-16 items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <h1 class="text-2xl font-bold text-white flex items-center">
+                                <div class="bg-white/20 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-meteor text-white text-lg"></i>
+                                </div>
+                                Ryusei.mobi
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <!-- Tombol Home untuk kembali ke index.html -->
+                        <a href="index.html" class="inline-flex items-center rounded-lg bg-white/20 px-4 py-2 text-sm font-semibold text-white hover:bg-white/30 transition-colors duration-200">
+                            <i class="fas fa-home mr-2"></i> Home
+                        </a>
+                        <div class="relative">
+                            <img class="h-8 w-8 rounded-full border-2 border-blue-300 object-cover" src="ppryusei.jpg" alt="Profile">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <main class="min-h-screen bg-gradient-to-br from-white via-blue-50 to-blue-100 pb-12">
+            <div class="mx-auto max-w-5xl py-2 lg:py-4 px-2 lg:px-8 space-y-6">
+                <!-- Files Card -->
+                <div class="overflow-hidden rounded-3xl bg-white shadow-xl border border-blue-100">
+                    <!-- Header dengan Search Bar -->
+                    <div class="bg-gradient-to-r from-blue-700 to-blue-600 px-6 py-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                            <div class="mb-4 sm:mb-0">
+                                <h2 class="text-xl font-bold text-white">Uploaded Files</h2>
+                                <p class="text-blue-100">Download and enjoy your scripts!</p>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                                <!-- Search Bar -->
+                                <div class="relative w-full sm:w-64">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-search text-blue-300"></i>
+                                    </div>
+                                    <input 
+                                        type="text" 
+                                        id="search-input"
+                                        class="w-full pl-10 pr-4 py-2 rounded-lg bg-white/20 border border-blue-300/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all"
+                                        placeholder="Search files..."
+                                        autocomplete="off"
+                                    >
+                                    <div id="clear-search" class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer hidden">
+                                        <i class="fas fa-times text-blue-300 hover:text-white"></i>
+                                    </div>
+                                </div>
+                                <button onclick="refreshData()" class="inline-flex items-center rounded-lg bg-white/20 px-4 py-2 text-sm font-semibold text-white hover:bg-white/30 transition-colors duration-200 whitespace-nowrap">
+                                    <i class="fas fa-sync-alt mr-2"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Search Info (akan muncul ketika sedang mencari) -->
+                    <div class="bg-blue-50/50 border-b border-blue-100 px-6 py-3 hidden" id="search-info">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm text-blue-800">
+                                <i class="fas fa-search mr-2"></i>
+                                <span id="search-result-text">Searching...</span>
+                            </div>
+                            <button id="clear-search-btn" class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center">
+                                <i class="fas fa-times mr-1"></i> Clear search
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Empty State -->
+                    <div class="py-16 px-6 text-center" id="empty-state">
+                        <div class="mx-auto max-w-md">
+                            <div class="h-24 w-24 mx-auto rounded-full bg-blue-100 flex items-center justify-center mb-6">
+                                <i class="fas fa-cloud-upload-alt text-blue-600 text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">No Files Uploaded Yet</h3>
+                            <p class="text-slate-600 mb-6">Files will appear here once they are uploaded. Check back soon!</p>
+                            <div class="text-sm text-slate-500">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                Upload files automatically
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Search Empty State -->
+                    <div class="py-16 px-6 text-center hidden" id="search-empty-state">
+                        <div class="mx-auto max-w-md">
+                            <div class="h-24 w-24 mx-auto rounded-full bg-yellow-100 flex items-center justify-center mb-6">
+                                <i class="fas fa-search text-yellow-600 text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">No Files Found</h3>
+                            <p class="text-slate-600 mb-4">No files match your search "<span id="search-query" class="font-semibold"></span>"</p>
+                            <p class="text-sm text-slate-500">Try different keywords or clear search</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Files List (akan muncul ketika ada files) -->
+                    <div class="divide-y divide-blue-50 hidden" id="files-container">
+                        <!-- File items akan di-generate oleh JavaScript ketika ada data -->
+                    </div>
+                    
+                    <!-- Pagination (akan muncul ketika ada files) -->
+                    <div class="border-t border-blue-100 bg-blue-50/30 px-6 py-4 hidden" id="pagination-section">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="text-sm text-slate-600">
+                                Showing <span class="font-medium text-blue-900" id="showing-from">0</span> to <span class="font-medium text-blue-900" id="showing-to">0</span> of <span class="font-medium text-blue-900" id="total-files">0</span> uploaded files
+                            </div>
+                            <div class="flex space-x-2" id="pagination-controls">
+                                <!-- Tombol pagination akan di-generate oleh JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="border-t border-blue-200 bg-white/90 backdrop-blur">
+            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0 flex items-center">
+                        <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-meteor text-blue-600"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-blue-900">Ryusei.mobi</p>
+                            <p class="text-xs text-slate-500">© 2017. All rights reserved.</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-sm text-slate-600 hover:text-blue-700">Dont forget to Subscribe Youtube Ryusei Official</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
+        <script>
+            // Data files akan diisi oleh gs.py secara otomatis
+            // ===========================================================
+            // INI ADALAH BAGIAN YANG AKAN DIUPDATE OTOMATIS OLEH gs.py
+            // JANGAN DIUBAH MANUAL!
+            // ===========================================================
+            let filesData = [
+            ];
+            // ===========================================================
+
+            // Konfigurasi pagination
+            let currentPage = 1;
+            const itemsPerPage = 15;
+            const maxPageButtons = 5;
+            
+            // Variabel untuk search
+            let searchQuery = '';
+            let filteredFiles = [];
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Cek dan tampilkan data
+                checkAndDisplayData();
+                
+                // TAMBAHKAN: Setiap kali halaman page.html diakses, tambah download counter
+                incrementDownloadCounter();
+                
+                // Setup search functionality
+                setupSearch();
+            });
+
+            function checkAndDisplayData() {
+                if (filesData.length === 0) {
+                    showEmptyState();
+                } else {
+                    showFilesList();
+                }
+            }
+
+            function showEmptyState() {
+                document.getElementById('empty-state').classList.remove('hidden');
+                document.getElementById('search-empty-state').classList.add('hidden');
+                document.getElementById('files-container').classList.add('hidden');
+                document.getElementById('pagination-section').classList.add('hidden');
+                document.getElementById('search-info').classList.add('hidden');
+                
+                document.getElementById('showing-from').textContent = 0;
+                document.getElementById('showing-to').textContent = 0;
+                document.getElementById('total-files').textContent = 0;
+            }
+
+            function showFilesList() {
+                document.getElementById('empty-state').classList.add('hidden');
+                document.getElementById('files-container').classList.remove('hidden');
+                document.getElementById('pagination-section').classList.remove('hidden');
+                
+                renderFiles();
+                updatePaginationInfo();
+                renderPaginationControls();
+            }
+
+            function renderFiles() {
+                const container = document.getElementById('files-container');
+                container.innerHTML = '';
+                
+                // Tentukan data yang akan ditampilkan
+                const dataToShow = searchQuery ? filteredFiles : filesData;
+                
+                if (dataToShow.length === 0) {
+                    if (searchQuery) {
+                        showSearchEmptyState();
+                    } else {
+                        showEmptyState();
+                    }
+                    return;
+                }
+                
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const filesToShow = dataToShow.slice(startIndex, endIndex);
+                
+                filesToShow.forEach(file => {
+                    const fileElement = createFileElement(file);
+                    container.appendChild(fileElement);
+                });
+            }
+
+            function createFileElement(file) {
+                const div = document.createElement('div');
+                div.className = 'flex items-center px-6 py-4 hover:bg-blue-50/50 transition-colors duration-150 file-item';
+                div.dataset.id = file.id;
+                
+                // Jika sedang search, highlight teks yang cocok
+                let fileName = file.name;
+                if (searchQuery) {
+                    fileName = highlightSearchMatches(file.name, searchQuery);
+                }
+                
+                div.innerHTML = `
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
+                        <i class="${file.icon} text-blue-600"></i>
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <a href="${file.shortlink}" target="_blank" class="file-download-link font-medium text-blue-900 hover:text-blue-700 no-underline block" data-file-id="${file.id}">
+                            ${fileName}
+                        </a>
+                        <p class="text-sm text-slate-500 timestamp">
+                            <i class="fas fa-calendar-alt mr-1 text-xs"></i> ${file.timestamp}
+                            <span class="mx-2">•</span>
+                            <i class="fas fa-file mr-1 text-xs"></i> ${file.type}
+                        </p>
+                    </div>
+                    <div class="ml-auto">
+                        <a href="${file.shortlink}" target="_blank" class="file-download-btn inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors duration-200 no-underline" data-file-id="${file.id}">
+                            <i class="fas fa-download mr-1"></i> Download
+                        </a>
+                    </div>
+                `;
+                
+                return div;
+            }
+
+            function highlightSearchMatches(text, query) {
+                if (!query) return text;
+                
+                const lowerText = text.toLowerCase();
+                const lowerQuery = query.toLowerCase();
+                const regex = new RegExp(`(${lowerQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                
+                // Temukan semua kecocokan
+                const matches = [...text.matchAll(regex)];
+                if (matches.length === 0) return text;
+                
+                // Bangun teks dengan highlight
+                let result = '';
+                let lastIndex = 0;
+                
+                matches.forEach(match => {
+                    const matchIndex = match.index;
+                    const matchLength = match[0].length;
+                    
+                    // Tambahkan teks sebelum match
+                    result += text.substring(lastIndex, matchIndex);
+                    
+                    // Tambahkan match dengan highlight
+                    result += `<span class="search-highlight">${text.substring(matchIndex, matchIndex + matchLength)}</span>`;
+                    
+                    lastIndex = matchIndex + matchLength;
+                });
+                
+                // Tambahkan sisa teks setelah match terakhir
+                result += text.substring(lastIndex);
+                
+                return result;
+            }
+
+            function updatePaginationInfo() {
+                const dataToShow = searchQuery ? filteredFiles : filesData;
+                const totalFiles = dataToShow.length;
+                const startIndex = (currentPage - 1) * itemsPerPage + 1;
+                const endIndex = Math.min(currentPage * itemsPerPage, totalFiles);
+                
+                document.getElementById('showing-from').textContent = startIndex;
+                document.getElementById('showing-to').textContent = endIndex;
+                document.getElementById('total-files').textContent = totalFiles;
+                
+                // Update search info text
+                if (searchQuery) {
+                    document.getElementById('search-result-text').textContent = `Found ${totalFiles} file(s) for "${searchQuery}"`;
+                    document.getElementById('search-query').textContent = searchQuery;
+                }
+            }
+
+            function renderPaginationControls() {
+                const dataToShow = searchQuery ? filteredFiles : filesData;
+                const totalPages = Math.ceil(dataToShow.length / itemsPerPage);
+                const container = document.getElementById('pagination-controls');
+                container.innerHTML = '';
+                
+                if (totalPages <= 1) {
+                    container.innerHTML = '';
+                    return;
+                }
+                
+                if (currentPage > 1) {
+                    const prevBtn = document.createElement('button');
+                    prevBtn.className = 'inline-flex items-center rounded-md border border-blue-200 bg-white px-3 py-1.5 text-sm font-medium text-blue-700 hover:bg-blue-50 transition-colors duration-200';
+                    prevBtn.innerHTML = '<i class="fas fa-chevron-left mr-1"></i> Previous';
+                    prevBtn.addEventListener('click', () => {
+                        currentPage--;
+                        renderFiles();
+                        updatePaginationInfo();
+                        renderPaginationControls();
+                    });
+                    container.appendChild(prevBtn);
+                }
+                
+                const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+                const endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = `page-btn inline-flex items-center rounded-md border px-3 py-1.5 text-sm font-medium transition-colors duration-200 ${i === currentPage ? 'active bg-blue-600 text-white border-blue-600' : 'border-blue-200 bg-white text-blue-700 hover:bg-blue-50'}`;
+                    pageBtn.textContent = i;
+                    pageBtn.addEventListener('click', () => {
+                        currentPage = i;
+                        renderFiles();
+                        updatePaginationInfo();
+                        renderPaginationControls();
+                    });
+                    container.appendChild(pageBtn);
+                }
+                
+                if (currentPage < totalPages) {
+                    const nextBtn = document.createElement('button');
+                    nextBtn.className = 'inline-flex items-center rounded-md border border-blue-200 bg-white px-3 py-1.5 text-sm font-medium text-blue-700 hover:bg-blue-50 transition-colors duration-200';
+                    nextBtn.innerHTML = 'Next <i class="fas fa-chevron-right ml-1"></i>';
+                    nextBtn.addEventListener('click', () => {
+                        currentPage++;
+                        renderFiles();
+                        updatePaginationInfo();
+                        renderPaginationControls();
+                    });
+                    container.appendChild(nextBtn);
+                }
+            }
+
+            function refreshData() {
+                // Reload halaman untuk mengambil data terbaru
+                location.reload();
+            }
+
+            // Fungsi untuk manual update jika diperlukan
+            window.updateFilesData = function(newData) {
+                filesData = newData;
+                currentPage = 1;
+                searchQuery = '';
+                filteredFiles = [];
+                checkAndDisplayData();
+                updateSearchUI();
+                console.log(`Data updated: ${filesData.length} files loaded`);
+            };
+            
+            // TAMBAHKAN FUNGSI UNTUK INCREMENT DOWNLOAD COUNTER
+            function incrementDownloadCounter() {
+                // Gunakan sessionStorage untuk mencegah increment ganda dalam satu sesi
+                const hasIncremented = sessionStorage.getItem('pageIncremented');
+                
+                if (!hasIncremented) {
+                    // Ambil total download dari localStorage
+                    let totalDownloads = localStorage.getItem('ryuseiTotalDownloads');
+                    
+                    if (totalDownloads === null) {
+                        totalDownloads = 398520; // Nilai default
+                    } else {
+                        totalDownloads = parseInt(totalDownloads);
+                    }
+                    
+                    // Tambah 1
+                    totalDownloads++;
+                    
+                    // Simpan kembali ke localStorage
+                    localStorage.setItem('ryuseiTotalDownloads', totalDownloads.toString());
+                    
+                    // Tandai sudah di-increment dalam sesi ini
+                    sessionStorage.setItem('pageIncremented', 'true');
+                    
+                    console.log(`Total Downloads updated to: ${totalDownloads}`);
+                }
+            }
+            
+            // FUNGSI SEARCH
+            function setupSearch() {
+                const searchInput = document.getElementById('search-input');
+                const clearSearchBtn = document.getElementById('clear-search');
+                const clearSearchMainBtn = document.getElementById('clear-search-btn');
+                const searchInfo = document.getElementById('search-info');
+                
+                // Event listener untuk input search
+                searchInput.addEventListener('input', function(e) {
+                    searchQuery = e.target.value.trim();
+                    
+                    if (searchQuery) {
+                        // Filter files berdasarkan search query (case insensitive)
+                        filteredFiles = filesData.filter(file => 
+                            file.name.toLowerCase().includes(searchQuery.toLowerCase())
+                        );
+                        
+                        // Tampilkan search info
+                        searchInfo.classList.remove('hidden');
+                        clearSearchBtn.classList.remove('hidden');
+                        
+                        // Reset ke halaman 1
+                        currentPage = 1;
+                        
+                        // Render ulang files
+                        if (filteredFiles.length === 0) {
+                            showSearchEmptyState();
+                        } else {
+                            document.getElementById('search-empty-state').classList.add('hidden');
+                            renderFiles();
+                            updatePaginationInfo();
+                            renderPaginationControls();
+                        }
+                    } else {
+                        // Clear search
+                        clearSearch();
+                    }
+                });
+                
+                // Event listener untuk tombol clear search (icon x)
+                clearSearchBtn.addEventListener('click', function() {
+                    clearSearch();
+                    searchInput.focus();
+                });
+                
+                // Event listener untuk tombol clear search (text)
+                clearSearchMainBtn.addEventListener('click', function() {
+                    clearSearch();
+                    searchInput.focus();
+                });
+                
+                // Event listener untuk tekan Enter di search
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        // Fokus ke hasil pertama jika ada
+                        if (filteredFiles.length > 0) {
+                            const firstFileLink = document.querySelector('.file-download-link');
+                            if (firstFileLink) {
+                                firstFileLink.focus();
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function clearSearch() {
+                searchQuery = '';
+                filteredFiles = [];
+                currentPage = 1;
+                
+                // Reset UI
+                document.getElementById('search-input').value = '';
+                document.getElementById('clear-search').classList.add('hidden');
+                document.getElementById('search-info').classList.add('hidden');
+                document.getElementById('search-empty-state').classList.add('hidden');
+                
+                // Render ulang semua files
+                if (filesData.length > 0) {
+                    renderFiles();
+                    updatePaginationInfo();
+                    renderPaginationControls();
+                } else {
+                    showEmptyState();
+                }
+            }
+            
+            function showSearchEmptyState() {
+                document.getElementById('empty-state').classList.add('hidden');
+                document.getElementById('files-container').classList.add('hidden');
+                document.getElementById('pagination-section').classList.add('hidden');
+                document.getElementById('search-empty-state').classList.remove('hidden');
+                document.getElementById('search-info').classList.remove('hidden');
+            }
+            
+            function updateSearchUI() {
+                if (searchQuery) {
+                    document.getElementById('search-info').classList.remove('hidden');
+                    document.getElementById('clear-search').classList.remove('hidden');
+                } else {
+                    document.getElementById('search-info').classList.add('hidden');
+                    document.getElementById('clear-search').classList.add('hidden');
+                }
+            }
+            
+            // Event listener untuk klik file download
+            document.addEventListener('click', function(e) {
+                // Jika yang diklik adalah link download atau tombol download
+                if (e.target.closest('.file-download-link') || e.target.closest('.file-download-btn')) {
+                    // Gunakan sessionStorage untuk tracking per-sesi
+                    const sessionKey = 'downloadedFiles';
+                    let downloadedFiles = sessionStorage.getItem(sessionKey);
+                    
+                    if (!downloadedFiles) {
+                        downloadedFiles = [];
+                    } else {
+                        downloadedFiles = JSON.parse(downloadedFiles);
+                    }
+                    
+                    // Dapatkan file ID
+                    const fileId = e.target.closest('.file-download-link, .file-download-btn').dataset.fileId;
+                    
+                    // Cek apakah file ini sudah di-download dalam sesi ini
+                    if (!downloadedFiles.includes(fileId)) {
+                        // Ambil total download dari localStorage
+                        let totalDownloads = localStorage.getItem('ryuseiTotalDownloads');
+                        
+                        if (totalDownloads === null) {
+                            totalDownloads = 398520; // Nilai default
+                        } else {
+                            totalDownloads = parseInt(totalDownloads);
+                        }
+                        
+                        // Tambah 1
+                        totalDownloads++;
+                        
+                        // Simpan kembali ke localStorage
+                        localStorage.setItem('ryuseiTotalDownloads', totalDownloads.toString());
+                        
+                        // Tambahkan file ID ke daftar file yang sudah di-download dalam sesi ini
+                        downloadedFiles.push(fileId);
+                        sessionStorage.setItem(sessionKey, JSON.stringify(downloadedFiles));
+                        
+                        console.log(`File ${fileId} downloaded. Total Downloads: ${totalDownloads}`);
+                        
+                        // Tampilkan notifikasi
+                        if (confirm('File download akan dibuka. Total download telah bertambah!')) {
+                            // Biarkan link terbuka seperti biasa
+                        } else {
+                            e.preventDefault();
+                        }
+                    } else {
+                        console.log(`File ${fileId} sudah di-download dalam sesi ini`);
+                    }
+                }
+            });
+        </script>
+        
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XNQ10X1V2J"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XNQ10X1V2J');
+        </script>
+    </body>
+</html>
