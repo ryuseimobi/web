@@ -50,7 +50,7 @@
                 <div class="p-5">
                     <!-- Title dengan emoji -->
                     <div class="text-center mb-6">
-                        <div class="text-3xl mb-2">🔥 Official Account Network 🔥</div>
+                        <div class="text-3xl mb-2">🔥Official Account Network🔥</div>
                         <p class="text-gray-600 text-sm">Your meth is good Jesse...</p>
                     </div>
                     
@@ -63,7 +63,7 @@
                                 <p class="font-semibold text-gray-900">Main YouTube</p>
                                 <a href="https://youtube.com/@salamanca3-h9q" target="_blank" 
                                    class="text-blue-600 hover:text-blue-800 break-all text-sm">
-                                    https://youtube.com/@salamanca3-h9q
+                                    Klik Disini
                                 </a>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                                 <p class="font-semibold text-gray-900">Companion YouTube Channel</p>
                                 <a href="https://www.youtube.com/@ryusei-e1j" target="_blank" 
                                    class="text-blue-600 hover:text-blue-800 break-all text-sm">
-                                    https://www.youtube.com/@ryusei-e1j
+                                    Klik Disini
                                 </a>
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                                 <p class="font-semibold text-gray-900">Telegram Channel</p>
                                 <a href="https://t.me/RyuseiOfficialYT" target="_blank" 
                                    class="text-blue-600 hover:text-blue-800 break-all text-sm">
-                                    https://t.me/RyuseiOfficialYT
+                                    Klik Disini
                                 </a>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                                 <p class="font-semibold text-gray-900">Open Chat</p>
                                 <a href="https://t.me/RyuseiPublic" target="_blank" 
                                    class="text-blue-600 hover:text-blue-800 break-all text-sm">
-                                    https://t.me/RyuseiPublic
+                                    Klik Disini
                                 </a>
                             </div>
                         </div>
@@ -109,9 +109,9 @@
                             <span class="text-2xl mr-3">💖</span>
                             <div class="flex-1">
                                 <p class="font-semibold text-gray-900">Support / Donasi</p>
-                                <a href="https://saweria.co/RyuseiScript" target="_blank" 
+                                <a href="qr.html" target="_blank" 
                                    class="text-blue-600 hover:text-blue-800 break-all text-sm">
-                                    https://saweria.co/RyuseiScript
+                                    Klik Disini
                                 </a>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                                 <p class="font-semibold text-gray-900">WhatsApp Channel</p>
                                 <a href="https://whatsapp.com/channel/0029VbAAG2RLo4hi1K8kkl0r" target="_blank" 
                                    class="text-blue-600 hover:text-blue-800 break-all text-sm">
-                                    https://whatsapp.com/channel/0029VbAAG2RLo4hi1K8kkl0r
+                                    Klik Disini
                                 </a>
                             </div>
                         </div>
@@ -167,18 +167,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Konfirmasi link eksternal
+            // Link eksternal langsung terbuka tanpa konfirmasi - TANPA POP-UP
             document.querySelectorAll('a[href*="youtube.com"], a[href*="t.me"], a[href*="saweria.co"], a[href*="whatsapp.com"]').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    let platform = 'external site';
-                    if (this.href.includes('youtube.com')) platform = 'YouTube';
-                    else if (this.href.includes('t.me')) platform = 'Telegram';
-                    else if (this.href.includes('saweria.co')) platform = 'Saweria';
-                    else if (this.href.includes('whatsapp.com')) platform = 'WhatsApp';
-                    
-                    if (!confirm(`Open ${platform}?`)) {
-                        e.preventDefault();
-                    }
+                link.addEventListener('click', function() {
+                    // Biarkan langsung redirect tanpa konfirmasi
+                    console.log('Opening external link:', this.href);
                 });
             });
         });
