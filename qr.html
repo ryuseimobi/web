@@ -7,53 +7,47 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
         }
-        .qr-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        
+        .qr-container {
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        
         .qr-image {
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
-            transition: transform 0.3s ease;
-            border: 4px solid white;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
         }
-        .qr-image:hover {
-            transform: scale(1.02);
-        }
-        /* QR Code size khusus */
-        .qr-large {
-            width: 400px !important;
-            height: 400px !important;
-            min-width: 400px !important;
-            min-height: 400px !important;
-            max-width: 400px !important;
-            max-height: 400px !important;
-        }
+        
         @media (max-width: 640px) {
-            .qr-large {
-                width: 320px !important;
-                height: 320px !important;
-                min-width: 320px !important;
-                min-height: 320px !important;
-                max-width: 320px !important;
-                max-height: 320px !important;
+            .qr-container {
+                width: 320px;
+                height: 320px;
+                padding: 8px;
             }
         }
+        
         @media (max-width: 480px) {
-            .qr-large {
-                width: 280px !important;
-                height: 280px !important;
-                min-width: 280px !important;
-                min-height: 280px !important;
-                max-width: 280px !important;
-                max-height: 280px !important;
+            .qr-container {
+                width: 280px;
+                height: 280px;
+                padding: 6px;
             }
         }
+        
         /* Animasi hati */
         @keyframes heartbeat {
             0% { transform: scale(1); }
@@ -65,150 +59,190 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md w-full">
-        <!-- Card QRIS -->
-        <div class="qr-card rounded-3xl overflow-hidden">
-            <!-- Header dengan tombol back -->
-            <div class="bg-gradient-to-r from-blue-700 to-blue-600 px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <a href="req.html" class="mr-3 text-white hover:text-blue-200 transition-colors">
-                            <i class="fas fa-arrow-left text-lg"></i>
-                        </a>
-                        <h1 class="text-xl font-bold text-white">QRIS Payment</h1>
+<body class="bg-slate-50 font-sans text-slate-900 antialiased">
+    <!-- Header seperti page.html -->
+    <header class="sticky border-b border-blue-800/30 top-0 z-50 bg-gradient-to-r from-blue-900 to-blue-800 backdrop-blur">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-white flex items-center">
+                            <div class="bg-white/20 p-2 rounded-lg mr-3">
+                                <i class="fas fa-meteor text-white text-lg"></i>
+                            </div>
+                            Ryusei.mobi
+                        </h1>
                     </div>
-                    <span class="text-xs bg-white/20 px-3 py-1 rounded-full text-white">
-                        <i class="fas fa-qrcode mr-1"></i> IDR
-                    </span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Tombol Home untuk kembali ke index.html -->
+                    <a href="index.html" class="inline-flex items-center rounded-lg bg-white/20 px-4 py-2 text-sm font-semibold text-white hover:bg-white/30 transition-colors duration-200">
+                        <i class="fas fa-home mr-2"></i> Home
+                    </a>
+                    <div class="relative">
+                        <img class="h-8 w-8 rounded-full border-2 border-blue-300 object-cover" src="ppryusei.jpg" alt="Profile">
+                    </div>
                 </div>
             </div>
-
-            <!-- Konten QRIS -->
-            <div class="p-8 text-center">
-                <!-- Judul -->
-                <div class="mb-6">
-                    <div class="h-16 w-16 mx-auto rounded-full bg-blue-100 flex items-center justify-center mb-4">
-                        <i class="fas fa-qrcode text-blue-600 text-2xl"></i>
+        </div>
+    </header>
+    
+    <main class="min-h-screen bg-gradient-to-br from-white via-blue-50 to-blue-100 pb-12">
+        <div class="mx-auto max-w-5xl py-2 lg:py-4 px-2 lg:px-8 space-y-6">
+            <!-- QRIS Card -->
+            <div class="overflow-hidden rounded-3xl bg-white shadow-xl border border-blue-100">
+                <!-- Header dengan Search Bar -->
+                <div class="bg-gradient-to-r from-blue-700 to-blue-600 px-6 py-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                        <div class="mb-4 sm:mb-0">
+                            <h2 class="text-xl font-bold text-white">QRIS Payment</h2>
+                            <p class="text-blue-100">Scan QR Code untuk pembayaran IDR 5,000</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="inline-flex items-center rounded-lg bg-white/20 px-3 py-1 text-sm font-semibold text-white">
+                                <i class="fas fa-qrcode mr-1"></i> Official QRIS
+                            </span>
+                        </div>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Scan QRIS untuk Pembayaran</h2>
-                    <p class="text-gray-600">Amount: <span class="font-bold text-green-600">IDR 5,000</span></p>
                 </div>
 
-                <!-- QR Code Image - BESAR -->
-                <div class="mb-8">
-                    <div class="flex justify-center mb-6">
-                        <div class="relative">
-                            <div class="absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur opacity-30"></div>
+                <!-- Konten QRIS -->
+                <div class="p-6 lg:p-8 text-center">
+                    <!-- QR Code Container -->
+                    <div class="mb-8">
+                        <div class="qr-container mx-auto mb-6">
                             <img 
                                 src="G861189774-0703A01-default.png" 
                                 alt="QRIS Payment Code"
-                                class="qr-image qr-large relative rounded-xl object-contain border-4 border-white shadow-lg"
-                                onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 400%22><rect width=%22400%22 height=%22400%22 fill=%22%23f0f0f0%22/><text x=%22200%22 y=%22210%22 text-anchor=%22middle%22 font-size=%2225%22 fill=%22%23666%22>QRIS Image</text></svg>';"
+                                class="qr-image"
+                                onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 400%22><rect width=%22400%22 height=%22400%22 fill=%22%23f8fafc%22 rx=%228%22/><text x=%22200%22 y=%22210%22 text-anchor=%22middle%22 font-family=%22Inter%22 font-size=%2220%22 fill=%22%23666%22>QRIS Payment</text><text x=%22200%22 y=%22240%22 text-anchor=%22middle%22 font-family=%22Inter%22 font-size=%2216%22 fill=%22%23999%22>IDR 5,000</text></svg>';"
                             >
                         </div>
-                    </div>
-                    
-                    <!-- Instruksi -->
-                    <div class="space-y-3 text-left mb-6">
-                        <div class="flex items-start">
-                            <div class="bg-green-100 p-1.5 rounded-full mr-3 mt-0.5">
-                                <i class="fas fa-mobile-alt text-green-600 text-sm"></i>
+                        
+                        <!-- Instruksi -->
+                        <div class="space-y-4 max-w-lg mx-auto mb-8">
+                            <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                                <div class="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-mobile-alt text-blue-600"></i>
+                                </div>
+                                <p class="text-sm text-gray-700 text-left">Buka aplikasi mobile banking atau e-wallet Anda</p>
                             </div>
-                            <p class="text-sm text-gray-700 flex-1">Buka aplikasi mobile banking atau e-wallet Anda</p>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-1.5 rounded-full mr-3 mt-0.5">
-                                <i class="fas fa-camera text-blue-600 text-sm"></i>
+                            
+                            <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                                <div class="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-camera text-blue-600"></i>
+                                </div>
+                                <p class="text-sm text-gray-700 text-left">Scan QR code di atas menggunakan fitur scan QRIS</p>
                             </div>
-                            <p class="text-sm text-gray-700 flex-1">Scan QR code di atas menggunakan fitur scan QRIS</p>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="bg-purple-100 p-1.5 rounded-full mr-3 mt-0.5">
-                                <i class="fas fa-check-circle text-purple-600 text-sm"></i>
-                            </div>
-                            <p class="text-sm text-gray-700 flex-1">Konfirmasi pembayaran sebesar IDR 5,000</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PESAN TERIMA KASIH YANG HANGAT -->
-                <div class="mb-6">
-                    <div class="bg-gradient-to-r from-pink-50 to-rose-50 border-l-4 border-pink-400 p-4 text-left rounded-r-lg">
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-heart text-pink-500 animate-heartbeat text-xl"></i>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-pink-900 mb-1">Terima Kasih atas Supportnya!</p>
-                                <p class="text-pink-800 text-sm">Kami sangat menghargai kepercayaan dan dukungan Anda.</p>
+                            
+                            <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                                <div class="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-check-circle text-blue-600"></i>
+                                </div>
+                                <p class="text-sm text-gray-700 text-left">Konfirmasi pembayaran sebesar IDR 5,000</p>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Informasi Merchant -->
-                <div class="bg-gray-50 rounded-xl p-4 mb-6 text-left">
-                    <div class="flex items-center mb-2">
-                        <i class="fas fa-store text-gray-500 mr-2"></i>
-                        <p class="font-medium text-gray-900">Merchant Information:</p>
+                    <!-- PESAN TERIMA KASIH YANG HANGAT -->
+                    <div class="mb-8">
+                        <div class="bg-gradient-to-r from-pink-50 to-rose-50 border-l-4 border-pink-400 p-5 text-left rounded-r-lg">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 mr-4">
+                                    <i class="fas fa-heart text-pink-500 animate-heartbeat text-2xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-lg font-medium text-pink-900 mb-2">Terima Kasih atas Supportnya!</p>
+                                    <p class="text-pink-800">Kami sangat menghargai kepercayaan dan dukungan Anda. Setelah pembayaran, silakan kirim bukti screenshot ke Telegram Admin kami ya! ❤️</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="space-y-1 text-sm text-gray-600 ml-6">
-                        <p><span class="font-medium">Name:</span> RYUSEI OFFICIAL, DIGITAL & KREATIF</p>
-                        <p><span class="font-medium">NMID:</span> ID1026481651101</p>
-                        <p><span class="font-medium">Type:</span> AO1 - SATU QRIS UNTUK SEMUA</p>
+
+                    <!-- Informasi Merchant -->
+                    <div class="bg-gray-50 rounded-xl p-5 mb-8 text-left">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-gray-100 p-2 rounded-lg mr-3">
+                                <i class="fas fa-store text-gray-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900 text-lg">Merchant Information</p>
+                                <p class="text-sm text-gray-600">Official payment gateway</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2 text-sm text-gray-600 ml-2">
+                            <div class="flex">
+                                <span class="font-medium w-20">Name:</span>
+                                <span class="ml-2">RYUSEI OFFICIAL, DIGITAL & KREATIF</span>
+                            </div>
+                            <div class="flex">
+                                <span class="font-medium w-20">NMID:</span>
+                                <span class="ml-2 font-mono">ID1026481651101</span>
+                            </div>
+                            <div class="flex">
+                                <span class="font-medium w-20">Type:</span>
+                                <span class="ml-2">AO1 - SATU QRIS UNTUK SEMUA</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Tombol -->
-                <div class="space-y-3">
-                    <!-- Tombol Back -->
-                    <a href="req.html" class="block w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg flex items-center justify-center transition font-medium">
-                        <i class="fas fa-arrow-left mr-2"></i>
-                        Back to Request Page
-                    </a>
-                    
-                    <!-- Tombol Telegram untuk kirim bukti -->
-                    <a href="https://t.me/RyuseiOfficialScript" target="_blank" 
-                       class="block w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 px-4 rounded-lg flex items-center justify-center transition font-medium">
-                        <i class="fab fa-telegram mr-2"></i>
-                        Send Payment Proof
-                    </a>
-                </div>
-
-                <!-- Footer Note -->
-                <div class="mt-6 pt-4 border-t border-gray-200">
-                    <p class="text-xs text-gray-500">
-                        <i class="fas fa-shield-alt mr-1"></i>
-                        Secure payment via QRIS. Check issuer at: 
-                        <a href="https://www.aspi-qris.id" target="_blank" class="text-blue-500 hover:text-blue-700">
-                            www.aspi-qris.id
+                    <!-- Tombol Send Payment Proof -->
+                    <div class="mb-6">
+                        <a href="https://t.me/RyuseiOfficialScript" target="_blank" 
+                           class="inline-flex items-center justify-center w-full md:w-auto bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white py-3 px-8 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                            <i class="fab fa-telegram mr-3 text-xl"></i>
+                            Send Payment Proof via Telegram
                         </a>
-                    </p>
+                    </div>
+
+                    <!-- Footer Note -->
+                    <div class="pt-6 border-t border-gray-200">
+                        <p class="text-sm text-gray-600">
+                            <i class="fas fa-shield-alt text-green-500 mr-2"></i>
+                            Secure payment via QRIS. Check issuer at: 
+                            <a href="https://www.aspi-qris.id" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
+                                www.aspi-qris.id
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
+    </main>
 
-        <!-- Credit Footer -->
-        <div class="mt-6 text-center">
-            <p class="text-sm text-white/80">© 2017-2024 Ryusei.mobi • Official QRIS Payment</p>
+    <!-- Footer seperti page.html -->
+    <footer class="border-t border-blue-200 bg-white/90 backdrop-blur">
+        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0 flex items-center">
+                    <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                        <i class="fas fa-meteor text-blue-600"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-blue-900">Ryusei.mobi</p>
+                        <p class="text-xs text-slate-500">© 2017. All rights reserved.</p>
+                    </div>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-sm text-slate-600 hover:text-blue-700">Official QRIS Payment Gateway</a>
+                </div>
+            </div>
         </div>
-    </div>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Tidak ada pop-up sama sekali
-            console.log('QRIS page loaded successfully');
+            console.log('QRIS Payment page loaded');
             
-            // Efek hover untuk QR code
+            // Cek jika gambar QRIS berhasil load
             const qrImage = document.querySelector('.qr-image');
             if (qrImage) {
-                qrImage.addEventListener('click', function() {
-                    // Efek visual sederhana saat diklik
-                    this.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1.02)';
-                    }, 150);
+                qrImage.addEventListener('load', function() {
+                    console.log('QRIS image loaded successfully');
+                });
+                qrImage.addEventListener('error', function() {
+                    console.log('QRIS image failed to load, using fallback');
                 });
             }
         });
