@@ -414,28 +414,23 @@
     </footer>
 
     <script>
-        // Interaktivitas sederhana
+        // Interaktivitas sederhana - TANPA POP-UP
         document.addEventListener('DOMContentLoaded', function() {
-            // Mobile menu toggle (basic)
+            // Mobile menu toggle (basic) - TANPA ALERT
             const mobileMenuButton = document.querySelector('button.md\\:hidden');
             if (mobileMenuButton) {
                 mobileMenuButton.addEventListener('click', function() {
-                    alert('Mobile menu would open here. In a full implementation, this would show a navigation drawer.');
+                    // Hanya log ke console, tidak ada pop-up
+                    console.log('Mobile menu clicked - would show navigation in full implementation');
                 });
             }
             
-            // Konfirmasi ketika mengklik ikon media sosial
+            // Link media sosial - TANPA KONFIRMASI
             const socialLinks = document.querySelectorAll('a[href*="youtube"], a[href*="t.me"], a[href*="whatsapp"]');
             socialLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    let platform = 'external site';
-                    if (this.href.includes('youtube')) platform = 'YouTube';
-                    else if (this.href.includes('t.me')) platform = 'Telegram';
-                    else if (this.href.includes('whatsapp')) platform = 'WhatsApp';
-                    
-                    if (!confirm(`You will be redirected to ${platform}. Continue?`)) {
-                        e.preventDefault();
-                    }
+                link.addEventListener('click', function() {
+                    // Biarkan langsung redirect tanpa konfirmasi
+                    console.log('Redirecting to social media');
                 });
             });
             
