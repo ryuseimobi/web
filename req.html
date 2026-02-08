@@ -152,12 +152,20 @@
                         </div>
                     </div>
                     
-                    <!-- Tombol Aksi (di tengah) -->
-                    <div class="flex justify-center">
+                    <!-- TOMBOL AKSI (DUA TOMBOL) -->
+                    <div class="flex flex-col sm:flex-row justify-center gap-3">
+                        <!-- Tombol DM Telegram -->
                         <a href="https://t.me/RyuseiOfficialScript" target="_blank" 
-                           class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-6 rounded flex items-center justify-center transition">
+                           class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-6 rounded flex items-center justify-center transition">
                             <i class="fab fa-telegram mr-2"></i>
                             DM Telegram Admin
+                        </a>
+                        
+                        <!-- Tombol Scan QRIS Baru -->
+                        <a href="qr.html" 
+                           class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white py-2.5 px-6 rounded flex items-center justify-center transition">
+                            <i class="fas fa-qrcode mr-2"></i>
+                            Scan QRIS
                         </a>
                     </div>
                 </div>
@@ -203,11 +211,13 @@
     </footer>
 
     <script>
-        // Konfirmasi link eksternal
-        document.querySelectorAll('a[href*="t.me"], a[href*="youtube.com"]').forEach(link => {
-            link.addEventListener('click', function(e) {
-                let platform = this.href.includes('t.me') ? 'Telegram' : 'YouTube';
-                if(!confirm(`Buka ${platform}?`)) e.preventDefault();
+        document.addEventListener('DOMContentLoaded', function() {
+            // Link eksternal langsung terbuka tanpa konfirmasi - TANPA POP-UP
+            document.querySelectorAll('a[href*="t.me"], a[href*="youtube.com"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    console.log('Opening external link:', this.href);
+                    // Biarkan langsung terbuka tanpa confirm()
+                });
             });
         });
     </script>
